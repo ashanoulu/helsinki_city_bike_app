@@ -25,7 +25,7 @@ def save_data():
 
     print("All data filtered")
     db_cursor = db_connection.cursor()
-    sql = "INSERT INTO journeys (departure_time, return_time, departure_station_id, departure_station_name, " \
+    sql = "INSERT INTO journey (departure_time, return_time, departure_station_id, departure_station_name, " \
           "return_station_id, return_station_name, covered_destination, duration) " \
           "VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
 
