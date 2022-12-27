@@ -5,9 +5,10 @@ import java.sql.Timestamp;
 import java.util.Objects;
 
 @Entity
+//@Table(name = "journey")
 public class Journey {
     private @Id
-    @GeneratedValue
+    @GeneratedValue(strategy=GenerationType.AUTO)
     Long id;
     private Timestamp departureTime;
     private Timestamp returnTime;
