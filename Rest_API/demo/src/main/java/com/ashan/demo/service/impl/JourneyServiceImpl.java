@@ -19,10 +19,39 @@ public class JourneyServiceImpl implements JourneyService {
 
 
     @Override
-    public Page<Journey> all(String departureStation, String returnStation, int coveredDestination, int duration,
-                             Pageable pageable) {
-        return journeyRepository.findAllByDepartureStationNameContainsAndAndReturnStationNameContainingAndCoveredDestinationLessThanEqualAndDurationLessThanEqual(
-                departureStation, returnStation, coveredDestination, duration, pageable
+    public Page<Journey> all(String departureStation, String returnStation, Pageable pageable) {
+        return journeyRepository.findAllByDepartureStationNameContainsAndAndReturnStationNameContaining(
+                departureStation, returnStation, pageable
         );
     }
+
+    @Override
+    public int countByDepartureStationId(String stationId) {
+        return journeyRepository.countByDepartureStationId(stationId);
+    }
+
+    @Override
+    public int countByReturnStationId(String stationId) {
+        return journeyRepository.countByReturnStationId(stationId);
+    }
+
+    @Override
+    public Object averageJourneysByDepartureStationId(String stationId) {
+        return journeyRepository.averageJourneysByDepartureStationId(stationId);
+    }
+
+    @Override
+    public Object averageJourneysByReturnStationId(String stationId) {
+        return journeyRepository.averageJourneysByReturnStationId(stationId);
+    }
+
+//    @Override
+//    public List<Object> getTopDepartureStations(String stationId, int limit) {
+//        return journeyRepository.getTopDepartureStations(stationId, limit);
+//    }
+
+//    @Override
+//    public List<Object> getTopReturnStations(String stationId, int limit) {
+//        return journeyRepository.getTopReturnStations(stationId, limit);
+//    }
 }

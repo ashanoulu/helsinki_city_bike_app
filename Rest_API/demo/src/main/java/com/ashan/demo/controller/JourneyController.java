@@ -7,13 +7,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
 @RestController
 public class JourneyController {
-
-//    private JourneyService service;
 
     private final JourneyService service;
 
@@ -23,20 +23,19 @@ public class JourneyController {
 
     //Get all journeys with pagination
     @GetMapping("/journeys")
-    Page<Journey> all(@RequestHeader String departureStation,
+    ResponseEntity<Page<Journey>> all(@RequestHeader String departureStation,
                       @RequestHeader String returnStation,
-                      @RequestHeader int coveredDestination,
-                      @RequestHeader int duration,
-                      @RequestHeader int page,
-                      @RequestHeader int size,
+                      @RequestHeader(defaultValue = "0") int page,
+                      @RequestHeader(defaultValue = "10") int size,
                       @RequestHeader(defaultValue = "departureStationName") String sort,
                       @RequestHeader(defaultValue = "ASC") String direction
                       ) throws Exception {
 
         Pageable pageable = PageRequest.of(page, size, getSortDirection(sort, direction));
-        return service.all(departureStation, returnStation, coveredDestination, duration, pageable);    
+        return new ResponseEntity<>(service.all(departureStation, returnStation, pageable), HttpStatus.OK);
     }
 
+    // Return the Sort object according to user parameters
     private Sort getSortDirection(String sort, String direction) {
         Sort data = Sort.by(sort).ascending();
 

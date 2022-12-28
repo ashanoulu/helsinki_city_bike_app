@@ -1,11 +1,13 @@
 package com.ashan.demo.model;
 
 import jakarta.persistence.*;
+import org.springframework.hateoas.RepresentationModel;
 
+import java.util.List;
 import java.util.Objects;
 
 @Entity
-public class Station {
+public class Station extends RepresentationModel<Station> {
 
     private @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -24,6 +26,11 @@ public class Station {
     private String coordinateX;
     @Column(name = "coordinate_y")
     private String coordinateY;
+
+//    SELECT departure_station_id, COUNT(*) FROM `journey` GROUP by departure_station_id ORDER by COUNT(*) DESC limit 5;
+//    @OneToMany(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "departureStationId", nullable = false)
+//    private List<Journey> journey;
 
     public Station() {}
 
