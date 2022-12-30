@@ -1,6 +1,8 @@
 package com.ashan.demo.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+
 import java.sql.Timestamp;
 import java.util.Objects;
 
@@ -10,13 +12,21 @@ public class Journey {
     private @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     Long id;
+    @NotNull
     private Timestamp departureTime;
+    @NotNull
     private Timestamp returnTime;
+    @NotNull
     private String departureStationId;
+    @NotNull
     private String departureStationName;
+    @NotNull
     private String returnStationId;
+    @NotNull
     private String returnStationName;
+    @NotNull
     private int coveredDestination;
+    @NotNull
     private int duration;
 
     Journey() {}

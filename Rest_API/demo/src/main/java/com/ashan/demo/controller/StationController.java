@@ -3,6 +3,9 @@ package com.ashan.demo.controller;
 import com.ashan.demo.common.StationViewDTO;
 import com.ashan.demo.model.Station;
 import com.ashan.demo.service.StationService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -12,7 +15,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -27,6 +29,13 @@ public class StationController {
     }
 
     // Get all stations
+    @Operation(summary = "Get all stations with pagination, filtration and sorting option")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved"),
+            @ApiResponse(responseCode = "404", description = "Not found - Incorrect parameters"),
+            @ApiResponse(responseCode = "500", description = "Something went wrong in the serverside, please check " +
+                    "parameters and try again")
+    })
     @GetMapping("/stations")
     ResponseEntity<Page<Station>> all(@RequestHeader(defaultValue = "") String name,
                             @RequestHeader(defaultValue = "nimi") String sort,
@@ -47,6 +56,13 @@ public class StationController {
     }
 
     // Get station data by Station ID
+    @Operation(summary = "Get station by station ID and station statistics")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved"),
+            @ApiResponse(responseCode = "404", description = "Not found - Incorrect parameters"),
+            @ApiResponse(responseCode = "500", description = "Something went wrong in the serverside, please check " +
+                    "parameters and try again")
+    })
     @GetMapping("/station/{stationId}")
     ResponseEntity<StationViewDTO> getStationById(@PathVariable("stationId") String stationId) throws Exception {
         StationViewDTO stationViewDTO = service.getStationById(stationId);
@@ -55,6 +71,13 @@ public class StationController {
     }
 
     // Add new station
+    @Operation(summary = "Add new station")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully saved"),
+            @ApiResponse(responseCode = "404", description = "Not found - Incorrect parameters"),
+            @ApiResponse(responseCode = "500", description = "Something went wrong in the serverside, please check " +
+                    "parameters and try again")
+    })
     @PostMapping("/station")
     ResponseEntity<Station> save(@RequestBody Station station) throws Exception {
         Station newStation = service.save(station);
@@ -63,6 +86,13 @@ public class StationController {
     }
 
     // Update existing station
+    @Operation(summary = "Update station data, without ID and station ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully updated"),
+            @ApiResponse(responseCode = "404", description = "Not found - Incorrect parameters"),
+            @ApiResponse(responseCode = "500", description = "Something went wrong in the serverside, please check " +
+                    "parameters and try again")
+    })
     @PutMapping("/station/{stationId}")
     ResponseEntity<Station> update(@PathVariable("stationId") String stationId,
                    @RequestBody Station station) throws Exception {
@@ -72,6 +102,14 @@ public class StationController {
     }
 
     //Delete station
+    @Operation(summary = "Remove station")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Successfully Deleted"),
+            @ApiResponse(responseCode = "404", description = "Not found - Incorrect parameters"),
+            @ApiResponse(responseCode = "400", description = "Incorrect station ID - Check station ID again"),
+            @ApiResponse(responseCode = "500", description = "Something went wrong in the serverside, please check " +
+                    "parameters and try again")
+    })
     @DeleteMapping("/station/{stationId}")
     Object delete(@PathVariable("stationId") String stationId) {
         if (service.delete(stationId)) {

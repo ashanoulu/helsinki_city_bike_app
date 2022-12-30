@@ -1,9 +1,10 @@
 package com.ashan.demo.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import org.springframework.hateoas.RepresentationModel;
 
-import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -13,24 +14,37 @@ public class Station extends RepresentationModel<Station> {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     Long id;
     private String stationId;
+    @NotNull
+    @Size(max = 255, message = "Too large, cannot enter")
     private String nimi;
+    @NotNull
+    @Size(max = 255, message = "Too large, cannot enter")
     private String namn;
+    @NotNull
+    @Size(max = 255, message = "Too large, cannot enter")
     private String name;
+    @NotNull
+    @Size(max = 255, message = "Too large, cannot enter")
     private String osoite;
+    @NotNull
+    @Size(max = 255, message = "Too large, cannot enter")
     private String address;
+    @NotNull
+    @Size(max = 255, message = "Too large, cannot enter")
     private String city;
+    @NotNull
+    @Size(max = 50, message = "Too large, cannot enter")
     private String stad;
+    @NotNull
+    @Size(max = 50, message = "Too large, cannot enter")
     private String operator;
     private int capacity;
+    @Size(max = 50, message = "Too large, cannot enter")
     @Column(name = "coordinate_x")
     private String coordinateX;
+    @Size(max = 50, message = "Too large, cannot enter")
     @Column(name = "coordinate_y")
     private String coordinateY;
-
-//    SELECT departure_station_id, COUNT(*) FROM `journey` GROUP by departure_station_id ORDER by COUNT(*) DESC limit 5;
-//    @OneToMany(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "departureStationId", nullable = false)
-//    private List<Journey> journey;
 
     public Station() {}
 
