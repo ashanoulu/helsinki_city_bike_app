@@ -29,7 +29,7 @@ public class Journey {
     @NotNull
     private int duration;
 
-    Journey() {}
+    public Journey() {}
 
     public Journey(Long id, Timestamp departureTime, Timestamp returnTime, String departureStationId,
                    String departureStationName, String returnStationId, String returnStationName,

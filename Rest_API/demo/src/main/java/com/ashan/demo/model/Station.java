@@ -1,6 +1,7 @@
 package com.ashan.demo.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import org.springframework.hateoas.RepresentationModel;
@@ -14,28 +15,28 @@ public class Station extends RepresentationModel<Station> {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     Long id;
     private String stationId;
-    @NotNull
+    @NotBlank
     @Size(max = 255, message = "Too large, cannot enter")
     private String nimi;
-    @NotNull
+    @NotBlank
     @Size(max = 255, message = "Too large, cannot enter")
     private String namn;
-    @NotNull
+    @NotBlank
     @Size(max = 255, message = "Too large, cannot enter")
     private String name;
-    @NotNull
+
     @Size(max = 255, message = "Too large, cannot enter")
     private String osoite;
-    @NotNull
+    @NotBlank
     @Size(max = 255, message = "Too large, cannot enter")
     private String address;
-    @NotNull
+    @NotBlank
     @Size(max = 255, message = "Too large, cannot enter")
     private String city;
-    @NotNull
+
     @Size(max = 50, message = "Too large, cannot enter")
     private String stad;
-    @NotNull
+
     @Size(max = 50, message = "Too large, cannot enter")
     private String operator;
     private int capacity;
@@ -64,6 +65,8 @@ public class Station extends RepresentationModel<Station> {
         this.coordinateX = coordinateX;
         this.coordinateY = coordinateY;
     }
+
+
 
     public Long getId() {
         return id;

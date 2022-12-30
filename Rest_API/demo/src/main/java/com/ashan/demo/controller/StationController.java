@@ -6,6 +6,7 @@ import com.ashan.demo.service.StationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -17,16 +18,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 public class StationController {
 
-    Logger logger = LoggerFactory.getLogger(StationController.class);
-
     private final StationService service;
+    Logger logger = LoggerFactory.getLogger(StationController.class);
 
     public StationController(StationService service) {
         this.service = service;
@@ -42,10 +41,10 @@ public class StationController {
     })
     @GetMapping("/stations")
     ResponseEntity<Page<Station>> all(@RequestHeader(defaultValue = "") String name,
-                            @RequestHeader(defaultValue = "nimi") String sort,
-                            @RequestHeader(defaultValue = "ASC") String direction,
-                            @RequestHeader int page,
-                            @RequestHeader int size
+                                      @RequestHeader(defaultValue = "nimi") String sort,
+                                      @RequestHeader(defaultValue = "ASC") String direction,
+                                      @RequestHeader int page,
+                                      @RequestHeader int size
     ) throws Exception {
 
         logger.info("Search params - " + name);
@@ -54,7 +53,7 @@ public class StationController {
 
         Page<Station> stations = service.all(name, pageable);
 
-        for (Station station: stations.getContent()) {
+        for (Station station : stations.getContent()) {
             addLinks(station);
         }
 
@@ -91,7 +90,7 @@ public class StationController {
                     "parameters and try again")
     })
     @PostMapping("/station")
-    ResponseEntity<Station> save(@RequestBody Station station) throws Exception {
+    ResponseEntity<Station> save(@Valid @RequestBody Station station) throws Exception {
         logger.info("New station data - ", station);
         logger.info("Begin save method");
         Station newStation = service.save(station);
@@ -112,7 +111,7 @@ public class StationController {
     })
     @PutMapping("/station/{stationId}")
     ResponseEntity<Station> update(@PathVariable("stationId") String stationId,
-                   @RequestBody Station station) throws Exception {
+                                   @Valid @RequestBody Station station) throws Exception {
         logger.info("Update station data - ", station);
         logger.info("Begin update method");
         Station newStation = service.update(stationId, station);
