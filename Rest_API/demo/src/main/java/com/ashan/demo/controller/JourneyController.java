@@ -8,6 +8,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.info.Info;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -20,6 +22,8 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @OpenAPIDefinition(info=@Info(title="Helsinki Bike App"))
 public class JourneyController {
+
+    Logger logger = LoggerFactory.getLogger(JourneyController.class);
 
     private final JourneyService service;
 
@@ -43,6 +47,9 @@ public class JourneyController {
                       @RequestHeader(defaultValue = "departureStationName") String sort,
                       @RequestHeader(defaultValue = "ASC") String direction
                       ) throws Exception {
+
+        logger.info("Search params - " + departureStation + "," + returnStation);
+        logger.info("Begin station all method");
 
         Pageable pageable = PageRequest.of(page, size, getSortDirection(sort, direction));
         return new ResponseEntity<>(service.all(departureStation, returnStation, pageable), HttpStatus.OK);

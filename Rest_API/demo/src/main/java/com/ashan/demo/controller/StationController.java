@@ -6,6 +6,8 @@ import com.ashan.demo.service.StationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -21,6 +23,8 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 public class StationController {
+
+    Logger logger = LoggerFactory.getLogger(StationController.class);
 
     private final StationService service;
 
@@ -44,6 +48,8 @@ public class StationController {
                             @RequestHeader int size
     ) throws Exception {
 
+        logger.info("Search params - " + name);
+        logger.info("Begin station all method");
         Pageable pageable = PageRequest.of(page, size, getSortDirection(sort, direction));
 
         Page<Station> stations = service.all(name, pageable);
@@ -52,6 +58,7 @@ public class StationController {
             addLinks(station);
         }
 
+        logger.info("Successfully retrieved data", stations);
         return new ResponseEntity<>(stations, HttpStatus.OK);
     }
 
@@ -65,8 +72,13 @@ public class StationController {
     })
     @GetMapping("/station/{stationId}")
     ResponseEntity<StationViewDTO> getStationById(@PathVariable("stationId") String stationId) throws Exception {
+        logger.info("Search params - " + stationId);
+        logger.info("Begin getStationById method");
+
         StationViewDTO stationViewDTO = service.getStationById(stationId);
         addLinks(stationViewDTO.getStation());
+
+        logger.info("Successfully retrieved data", stationViewDTO);
         return new ResponseEntity<>(stationViewDTO, HttpStatus.OK);
     }
 
@@ -80,8 +92,12 @@ public class StationController {
     })
     @PostMapping("/station")
     ResponseEntity<Station> save(@RequestBody Station station) throws Exception {
+        logger.info("New station data - ", station);
+        logger.info("Begin save method");
         Station newStation = service.save(station);
         addLinks(newStation);
+
+        logger.info("New station saved successfully", newStation);
         return new ResponseEntity<>(station, HttpStatus.OK);
     }
 
@@ -90,14 +106,23 @@ public class StationController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully updated"),
             @ApiResponse(responseCode = "404", description = "Not found - Incorrect parameters"),
+            @ApiResponse(responseCode = "400", description = "Not found - Cannot find station"),
             @ApiResponse(responseCode = "500", description = "Something went wrong in the serverside, please check " +
                     "parameters and try again")
     })
     @PutMapping("/station/{stationId}")
     ResponseEntity<Station> update(@PathVariable("stationId") String stationId,
                    @RequestBody Station station) throws Exception {
+        logger.info("Update station data - ", station);
+        logger.info("Begin update method");
         Station newStation = service.update(stationId, station);
+
+        if (newStation == null) {
+            return new ResponseEntity<>(station, HttpStatus.BAD_REQUEST);
+        }
         addLinks(newStation);
+
+        logger.info("Station data updated successfully", newStation);
         return new ResponseEntity<>(station, HttpStatus.OK);
     }
 
@@ -112,9 +137,15 @@ public class StationController {
     })
     @DeleteMapping("/station/{stationId}")
     Object delete(@PathVariable("stationId") String stationId) {
+        logger.info("Delete station data - ", stationId);
+        logger.info("Begin delete method");
+
         if (service.delete(stationId)) {
+            logger.info("Station deleted successfully", stationId);
             return new ResponseEntity<>("Successfully deleted", HttpStatus.NO_CONTENT);
         }
+
+        logger.info("Station couldn't find", stationId);
         return new ResponseEntity<>("Cannot find station - " + stationId, HttpStatus.BAD_REQUEST);
     }
 

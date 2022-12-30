@@ -14,6 +14,4 @@ public interface JourneyService {
     int countByReturnStationId(String stationId);
     Object averageJourneysByDepartureStationId(String stationId);
     Object averageJourneysByReturnStationId(String stationId);
-//    List<Object> getTopDepartureStations(String stationId,  int limit);
-//    List<Object> getTopReturnStations(String stationId, int limit);
 }
