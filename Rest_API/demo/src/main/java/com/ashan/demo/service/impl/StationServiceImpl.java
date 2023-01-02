@@ -40,45 +40,53 @@ public class StationServiceImpl implements StationService {
     @Override
     public StationViewDTO getStationById(String stationId) {
         try {
-            long departureCount = journeyRepository.countByDepartureStationId(stationId);
-            long returnCount = journeyRepository.countByReturnStationId(stationId);
-            List<List<String>> averageJourneysByDeparture = journeyRepository.averageJourneysByDepartureStationId(stationId);
-            List<List<String>> averageJourneysByReturn = journeyRepository.averageJourneysByReturnStationId(stationId);
-            List<List<String>> topDepartureStations = journeyRepository.getTopDepartureStations(stationId, 5);
-            List<List<String>> topReturnStations = journeyRepository.getTopReturnStations(stationId, 5);
-
-            StationStatisticsDTO stationStat = new StationStatisticsDTO();
-            stationStat.setStationId(stationId);
-            stationStat.setDepartureCount(departureCount);
-            stationStat.setReturnCount(returnCount);
-            stationStat.setAverageDepartureDistance(Double.valueOf(averageJourneysByDeparture.get(0).get(0)));
-            stationStat.setAverageReturnDistance(Double.valueOf(averageJourneysByReturn.get(0).get(0)));
-            stationStat.setAverageDepartureDuration(Double.valueOf(averageJourneysByDeparture.get(0).get(1)));
-            stationStat.setAverageReturnDuration(Double.valueOf(averageJourneysByReturn.get(0).get(1)));
-
-            List<JourneyStatisticsDTO> journeyStatDepartList = new ArrayList<>();
-            List<JourneyStatisticsDTO> journeyStatReturnList = new ArrayList<>();
-
-            for (List list : topDepartureStations) {
-                JourneyStatisticsDTO journeyStatDTO = new JourneyStatisticsDTO();
-                journeyStatDTO.setStationId((String) list.get(3));
-                journeyStatDTO.setStationName((String) list.get(4));
-                journeyStatDTO.setTotal((String) list.get(9));
-                journeyStatDepartList.add(journeyStatDTO);
-            }
-
-            for (List list : topReturnStations) {
-                JourneyStatisticsDTO journeyStatDTO = new JourneyStatisticsDTO();
-                journeyStatDTO.setStationId((String) list.get(5));
-                journeyStatDTO.setStationName((String) list.get(6));
-                journeyStatDTO.setTotal((String) list.get(9));
-                journeyStatReturnList.add(journeyStatDTO);
-            }
-
-            stationStat.setDepartStationStat(journeyStatDepartList);
-            stationStat.setReturnStationStat(journeyStatReturnList);
-
             Station station = stationRepository.findByStationId(stationId);
+            StationStatisticsDTO stationStat = new StationStatisticsDTO();
+            if (station != null) {
+                long departureCount = journeyRepository.countByDepartureStationId(stationId);
+                long returnCount = journeyRepository.countByReturnStationId(stationId);
+                List<List<String>> averageJourneysByDeparture = journeyRepository.averageJourneysByDepartureStationId(stationId);
+                List<List<String>> averageJourneysByReturn = journeyRepository.averageJourneysByReturnStationId(stationId);
+                List<List<String>> topDepartureStations = journeyRepository.getTopDepartureStations(stationId, 5);
+                List<List<String>> topReturnStations = journeyRepository.getTopReturnStations(stationId, 5);
+
+
+                stationStat.setStationId(stationId);
+                stationStat.setDepartureCount(departureCount);
+                stationStat.setReturnCount(returnCount);
+
+                try {
+                    stationStat.setAverageDepartureDistance(Double.valueOf(averageJourneysByDeparture.get(0).get(0)));
+                    stationStat.setAverageReturnDistance(Double.valueOf(averageJourneysByReturn.get(0).get(0)));
+                    stationStat.setAverageDepartureDuration(Double.valueOf(averageJourneysByDeparture.get(0).get(1)));
+                    stationStat.setAverageReturnDuration(Double.valueOf(averageJourneysByReturn.get(0).get(1)));
+                } catch (Exception e) {
+
+                }
+
+                List<JourneyStatisticsDTO> journeyStatDepartList = new ArrayList<>();
+                List<JourneyStatisticsDTO> journeyStatReturnList = new ArrayList<>();
+
+                for (List list : topDepartureStations) {
+                    JourneyStatisticsDTO journeyStatDTO = new JourneyStatisticsDTO();
+                    journeyStatDTO.setStationId((String) list.get(3));
+                    journeyStatDTO.setStationName((String) list.get(4));
+                    journeyStatDTO.setTotal((String) list.get(9));
+                    journeyStatDepartList.add(journeyStatDTO);
+                }
+
+                for (List list : topReturnStations) {
+                    JourneyStatisticsDTO journeyStatDTO = new JourneyStatisticsDTO();
+                    journeyStatDTO.setStationId((String) list.get(5));
+                    journeyStatDTO.setStationName((String) list.get(6));
+                    journeyStatDTO.setTotal((String) list.get(9));
+                    journeyStatReturnList.add(journeyStatDTO);
+                }
+
+                stationStat.setDepartStationStat(journeyStatDepartList);
+                stationStat.setReturnStationStat(journeyStatReturnList);
+            }
+
 
             return new StationViewDTO(stationId, station, stationStat);
         } catch (Exception e) {

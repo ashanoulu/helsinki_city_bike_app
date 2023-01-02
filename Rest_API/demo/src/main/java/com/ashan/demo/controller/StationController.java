@@ -75,10 +75,17 @@ public class StationController {
         logger.info("Begin getStationById method");
 
         StationViewDTO stationViewDTO = service.getStationById(stationId);
-        addLinks(stationViewDTO.getStation());
+        HttpStatus status = HttpStatus.OK;
 
-        logger.info("Successfully retrieved data", stationViewDTO);
-        return new ResponseEntity<>(stationViewDTO, HttpStatus.OK);
+        if (stationViewDTO.getStation() != null) {
+            addLinks(stationViewDTO.getStation());
+
+            logger.info("Successfully retrieved data", stationViewDTO);
+        } else {
+            status = HttpStatus.NO_CONTENT;
+        }
+
+        return new ResponseEntity<>(stationViewDTO, status);
     }
 
     // Add new station
