@@ -60,7 +60,6 @@
 
 <script>
 import axios from "axios";
-// import paginate from 'vuejs-paginate'
 import paginate from "vuejs-paginate-next";
 import { useLoading } from 'vue3-loading-overlay';
 import 'vue3-loading-overlay/dist/vue3-loading-overlay.css';
@@ -86,12 +85,7 @@ export default {
   methods: {
     getJourneys() {
       let loader = useLoading();
-      loader.show({
-        // Optional parameters
-        // container: this.fullPage ? null : formContainer.value,
-        // canCancel: true,
-        // onCancel: onCancel,
-      });
+      loader.show();
       axios.get("/api/v1/journeys", {
         headers: {
           departureStation: this.departure_station,

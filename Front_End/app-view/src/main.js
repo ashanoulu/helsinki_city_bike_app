@@ -8,17 +8,6 @@ import VueSweetalert2 from 'vue-sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
 
 
-
-// const router = createRouter({
-//     history,
-//     // mode: 'history', //VueRouter.createWebHashHistory(),
-//     routes
-// });
-
-// createApp.router = router
-
-
-
 const app = createApp(App)
 app.use(router)
 app.use(VueAxios, axios) // 👈

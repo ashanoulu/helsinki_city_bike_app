@@ -6,6 +6,12 @@ import Station from "./components/station/Station";
 
 export const routes = [
     {
+        path: '/',
+        name: 'journey-view',
+        meta: {layout: 'journey-view'},
+        component: Journey
+    },
+    {
         path: '/journeys',
         name: 'journey-view',
         meta: {layout: 'journey-view'},
