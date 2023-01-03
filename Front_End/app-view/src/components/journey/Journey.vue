@@ -62,6 +62,8 @@
 import axios from "axios";
 // import paginate from 'vuejs-paginate'
 import paginate from "vuejs-paginate-next";
+import { useLoading } from 'vue3-loading-overlay';
+import 'vue3-loading-overlay/dist/vue3-loading-overlay.css';
 export default {
   name: "journey-view",
   components: {
@@ -83,6 +85,13 @@ export default {
   },
   methods: {
     getJourneys() {
+      let loader = useLoading();
+      loader.show({
+        // Optional parameters
+        // container: this.fullPage ? null : formContainer.value,
+        // canCancel: true,
+        // onCancel: onCancel,
+      });
       axios.get("/api/v1/journeys", {
         headers: {
           departureStation: this.departure_station,
@@ -92,6 +101,7 @@ export default {
           size: this.size
         }
       }).then(response => {
+        loader.hide()
         if (response.data) {
           this.journey_list = response.data.content
           this.page = response.data.number
@@ -99,8 +109,10 @@ export default {
           this.total_pages = response.data.totalPages
           console.log(this.data)
         }
+
       }).catch(e => {
         alert(e)
+        loader.hide()
       })
     }
   }
