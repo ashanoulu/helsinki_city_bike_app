@@ -46,6 +46,11 @@ After you start the project you can simply access the API Docs via Swagger UI
 Follow the below URL - 
 
     http://${your_host}:${port}/api/v1/swagger-ui/index.html#/
+
+#### DB Performance Improve
+Indexed 'return_station_id' and 'departure_station_id' in journey table, since these columns are using to calculate statistics.
+Indexed 'station_id' column in station table, since all select operations run based on this.
+
 #### Architecture
 In this application, I followed MVC high level architecture by adding a service layer. 
 Mainly you can find there are four groups
@@ -59,3 +64,4 @@ Mainly you can find there are four groups
 1. Unit testings
 2. E2E Testings (Cypress)
 3. Live Demo (Host in a cloud environment)
+
