@@ -1,7 +1,7 @@
 # Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 
-name: Build and deploy container app to Azure Web App - hel-bike
+name: Build and deploy JAR app to Azure Web App - hel-bike
 
 on:
   push:
@@ -11,41 +11,43 @@ on:
 
 jobs:
   build:
-    runs-on: 'ubuntu-latest'
+    runs-on: windows-latest
 
     steps:
-    - uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v1
+      - name: Set up Java version
+        uses: actions/setup-java@v1
+        with:
+          java-version: '17'
 
-    - name: Log in to registry
-      uses: docker/login-action@v1
-      with:
-        registry: https://mcr.microsoft.com/
-        username: ${{ secrets.AzureAppService_ContainerUsername_3dc1f1ec81fd487086172b76036c7350 }}
-        password: ${{ secrets.AzureAppService_ContainerPassword_f9765ede041c42fdab0d7c102e847c7d }}
+      - name: Build with Maven
+        run: mvn clean install
 
-    - name: Build and push container image to registry
-      uses: docker/build-push-action@v2
-      with:
-        push: true
-        tags: mcr.microsoft.com/${{ secrets.AzureAppService_ContainerUsername_3dc1f1ec81fd487086172b76036c7350 }}/appsvc/staticsite:${{ github.sha }}
-        file: ./Dockerfile
+      - name: Upload artifact for deployment job
+        uses: actions/upload-artifact@v2
+        with:
+          name: java-app
+          path: '${{ github.workspace }}/target/*.jar'
 
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     needs: build
     environment:
-      name: 'production'
+      name: 'Production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
 
     steps:
-    - name: Deploy to Azure Web App
-      id: deploy-to-webapp
-      uses: azure/webapps-deploy@v2
-      with:
-        app-name: 'hel-bike'
-        slot-name: 'production'
-        publish-profile: ${{ secrets.AzureAppService_PublishProfile_76e1f9fabad44ddcb6a4711605ceaa4d }}
-        images: 'mcr.microsoft.com/${{ secrets.AzureAppService_ContainerUsername_3dc1f1ec81fd487086172b76036c7350 }}/appsvc/staticsite:${{ github.sha }}'
+      - name: Download artifact from build job
+        uses: actions/download-artifact@v2
+        with:
+          name: java-app
+
+      - name: Deploy to Azure Web App
+        id: deploy-to-webapp
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: 'hel-bike'
+          slot-name: 'Production'
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_B020BD3307274E809AD934CD44FEA7D8 }}
+          package: '*.jar'
