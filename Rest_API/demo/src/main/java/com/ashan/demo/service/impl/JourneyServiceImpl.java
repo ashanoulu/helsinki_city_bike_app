@@ -1,26 +1,23 @@
 package com.ashan.demo.service.impl;
 
-import com.ashan.demo.controller.JourneyController;
 import com.ashan.demo.model.Journey;
 import com.ashan.demo.repository.JourneyRepository;
 import com.ashan.demo.service.JourneyService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 
-@Service
+@Service("journeyService")
 public class JourneyServiceImpl implements JourneyService {
 
-    Logger logger = LoggerFactory.getLogger(JourneyServiceImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(JourneyServiceImpl.class);
 
-    private final JourneyRepository journeyRepository;
-
-    public JourneyServiceImpl(JourneyRepository journeyRepository) {
-        this.journeyRepository = journeyRepository;
-    }
+    @Autowired
+    private  JourneyRepository journeyRepository;
 
 
     @Override

@@ -3,7 +3,6 @@ package com.ashan.demo.service.impl;
 import com.ashan.demo.common.JourneyStatisticsDTO;
 import com.ashan.demo.common.StationStatisticsDTO;
 import com.ashan.demo.common.StationViewDTO;
-import com.ashan.demo.model.Journey;
 import com.ashan.demo.model.Station;
 import com.ashan.demo.repository.JourneyRepository;
 import com.ashan.demo.repository.StationRepository;
@@ -11,6 +10,7 @@ import com.ashan.demo.service.StationService;
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -22,15 +22,13 @@ import java.util.List;
 @Service
 public class StationServiceImpl implements StationService {
 
-    Logger logger = LoggerFactory.getLogger(StationServiceImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(StationServiceImpl.class);
 
-    private final StationRepository stationRepository;
-    private final JourneyRepository journeyRepository;
+    @Autowired
+    private StationRepository stationRepository;
 
-    public StationServiceImpl(StationRepository stationRepository, JourneyRepository journeyRepository) {
-        this.stationRepository = stationRepository;
-        this.journeyRepository = journeyRepository;
-    }
+    @Autowired
+    private JourneyRepository journeyRepository;
 
     @Override
     public Page<Station> all(String name, Pageable pageable) {

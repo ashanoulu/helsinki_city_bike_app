@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -24,12 +25,10 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @RestController
 public class StationController {
 
-    private final StationService service;
-    Logger logger = LoggerFactory.getLogger(StationController.class);
+    @Autowired
+    private StationService service;
 
-    public StationController(StationService service) {
-        this.service = service;
-    }
+    Logger logger = LoggerFactory.getLogger(StationController.class);
 
     // Get all stations
     @Operation(summary = "Get all stations with pagination, filtration and sorting option")
@@ -43,8 +42,8 @@ public class StationController {
     ResponseEntity<Page<Station>> all(@RequestHeader(defaultValue = "") String name,
                                       @RequestHeader(defaultValue = "nimi") String sort,
                                       @RequestHeader(defaultValue = "ASC") String direction,
-                                      @RequestHeader int page,
-                                      @RequestHeader int size
+                                      @RequestHeader(defaultValue = "0") int page,
+                                      @RequestHeader(defaultValue = "10") int size
     ) throws Exception {
 
         logger.info("Search params - " + name);

@@ -11,9 +11,9 @@ import java.util.Objects;
 @Entity
 public class Station extends RepresentationModel<Station> {
 
-    private @Id
+    @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    Long id;
+    private Long id;
     private String stationId;
     @NotBlank
     @Size(max = 255, message = "Too large, cannot enter")
@@ -47,10 +47,11 @@ public class Station extends RepresentationModel<Station> {
     @Column(name = "coordinate_y")
     private String coordinateY;
 
-    public Station() {}
+    public Station() { super();}
 
     public Station(Long id, String stationId, String nimi, String namn, String name, String osoite, String address,
                    String city, String stad, String operator, int capacity, String coordinateX, String coordinateY) {
+        super();
         this.id = id;
         this.stationId = stationId;
         this.nimi = nimi;
@@ -172,16 +173,16 @@ public class Station extends RepresentationModel<Station> {
         this.coordinateY = coordinateY;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Station)) return false;
-        Station station = (Station) o;
-        return capacity == station.capacity && Objects.equals(id, station.id) && Objects.equals(stationId, station.stationId) && Objects.equals(nimi, station.nimi) && Objects.equals(namn, station.namn) && Objects.equals(name, station.name) && Objects.equals(osoite, station.osoite) && Objects.equals(address, station.address) && Objects.equals(city, station.city) && Objects.equals(stad, station.stad) && Objects.equals(operator, station.operator) && Objects.equals(coordinateX, station.coordinateX) && Objects.equals(coordinateY, station.coordinateY);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, stationId, nimi, namn, name, osoite, address, city, stad, operator, capacity, coordinateX, coordinateY);
-    }
+//    @Override
+//    public boolean equals(Object o) {
+//        if (this == o) return true;
+//        if (!(o instanceof Station)) return false;
+//        Station station = (Station) o;
+//        return capacity == station.capacity && Objects.equals(id, station.id) && Objects.equals(stationId, station.stationId) && Objects.equals(nimi, station.nimi) && Objects.equals(namn, station.namn) && Objects.equals(name, station.name) && Objects.equals(osoite, station.osoite) && Objects.equals(address, station.address) && Objects.equals(city, station.city) && Objects.equals(stad, station.stad) && Objects.equals(operator, station.operator) && Objects.equals(coordinateX, station.coordinateX) && Objects.equals(coordinateY, station.coordinateY);
+//    }
+//
+//    @Override
+//    public int hashCode() {
+//        return Objects.hash(id, stationId, nimi, namn, name, osoite, address, city, stad, operator, capacity, coordinateX, coordinateY);
+//    }
 }

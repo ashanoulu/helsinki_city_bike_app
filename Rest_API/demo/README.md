@@ -60,8 +60,5 @@ Mainly you can find there are four groups
 3. Repositories
 4. Service
 
-##### Upcoming features (features under developing)
-1. Unit testings
-2. E2E Testings (Cypress)
-3. Live Demo (Host in a cloud environment)
+
 

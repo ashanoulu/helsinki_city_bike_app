@@ -1,17 +1,20 @@
 package com.ashan.demo.model;
 
-import jakarta.persistence.*;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotNull;
+import org.springframework.hateoas.RepresentationModel;
 
 import java.sql.Timestamp;
-import java.util.Objects;
 
 @Entity
-//@Table(name = "journey")
-public class Journey {
-    private @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
-    Long id;
+public class Journey extends RepresentationModel<Journey> {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
     @NotNull
     private Timestamp departureTime;
     @NotNull
@@ -29,11 +32,12 @@ public class Journey {
     @NotNull
     private int duration;
 
-    public Journey() {}
+    public Journey() {super();}
 
     public Journey(Long id, Timestamp departureTime, Timestamp returnTime, String departureStationId,
                    String departureStationName, String returnStationId, String returnStationName,
                    int coveredDestination, int duration) {
+        super();
         this.id = id;
         this.departureTime = departureTime;
         this.returnTime = returnTime;
@@ -117,16 +121,16 @@ public class Journey {
         this.duration = duration;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Journey)) return false;
-        Journey journey = (Journey) o;
-        return coveredDestination == journey.coveredDestination && duration == journey.duration && Objects.equals(id, journey.id) && Objects.equals(departureTime, journey.departureTime) && Objects.equals(returnTime, journey.returnTime) && Objects.equals(departureStationId, journey.departureStationId) && Objects.equals(departureStationName, journey.departureStationName) && Objects.equals(returnStationId, journey.returnStationId) && Objects.equals(returnStationName, journey.returnStationName);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, departureTime, returnTime, departureStationId, departureStationName, returnStationId, returnStationName, coveredDestination, duration);
-    }
+//    @Override
+//    public boolean equals(Object o) {
+//        if (this == o) return true;
+//        if (!(o instanceof Journey)) return false;
+//        Journey journey = (Journey) o;
+//        return coveredDestination == journey.coveredDestination && duration == journey.duration && Objects.equals(id, journey.id) && Objects.equals(departureTime, journey.departureTime) && Objects.equals(returnTime, journey.returnTime) && Objects.equals(departureStationId, journey.departureStationId) && Objects.equals(departureStationName, journey.departureStationName) && Objects.equals(returnStationId, journey.returnStationId) && Objects.equals(returnStationName, journey.returnStationName);
+//    }
+//
+//    @Override
+//    public int hashCode() {
+//        return Objects.hash(id, departureTime, returnTime, departureStationId, departureStationName, returnStationId, returnStationName, coveredDestination, duration);
+//    }
 }
