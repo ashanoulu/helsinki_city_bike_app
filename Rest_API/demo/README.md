@@ -2,10 +2,12 @@
 
 ### Java - 17.0
 ### Spring Boot - 3.0
+### MySql - 8.0
+### Redis - 7.0
 
 ## Steps to getting started
 
-1. Change the database credentials in application.properties. 
+1. Change the database credentials and Redis Cache in application.properties. 
 (To import data and SQL script please refer the data imports project.)
 i.e - You can auto generate DB by changing following in application.properties, but it is not recommended for this project.
 ```bash
@@ -47,7 +49,8 @@ Follow the below URL -
 
     http://${your_host}:${port}/api/v1/swagger-ui/index.html#/
 
-#### DB Performance Improve
+#### Application Performance Improve
+Add Redis Caching for better performances
 Indexed 'return_station_id' and 'departure_station_id' in journey table, since these columns are using to calculate statistics.
 Indexed 'station_id' column in station table, since all select operations run based on this.
 

@@ -6,10 +6,11 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import org.springframework.hateoas.RepresentationModel;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
-public class Station extends RepresentationModel<Station> {
+public class Station extends RepresentationModel<Station> implements Serializable {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)

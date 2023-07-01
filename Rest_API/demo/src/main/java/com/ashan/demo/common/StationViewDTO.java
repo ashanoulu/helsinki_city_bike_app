@@ -2,7 +2,9 @@ package com.ashan.demo.common;
 
 import com.ashan.demo.model.Station;
 
-public class StationViewDTO {
+import java.io.Serializable;
+
+public class StationViewDTO implements Serializable {
     private String stationId;
     private Station station;
     private StationStatisticsDTO stationStatistics;

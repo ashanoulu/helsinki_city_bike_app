@@ -8,10 +8,11 @@ import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.hateoas.RepresentationModel;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 
 @Entity
-public class Journey extends RepresentationModel<Journey> {
+public class Journey extends RepresentationModel<Journey> implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;

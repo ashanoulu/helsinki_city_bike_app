@@ -11,6 +11,7 @@ import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -31,11 +32,13 @@ public class StationServiceImpl implements StationService {
     private JourneyRepository journeyRepository;
 
     @Override
+    @Cacheable("allStations")
     public Page<Station> all(String name, Pageable pageable) {
         return stationRepository.findAllByNimiContainsOrNamnContainsOrNameContains(name, name, name, pageable);
     }
 
     @Override
+    @Cacheable("stationDataById")
     public StationViewDTO getStationById(String stationId) {
         try {
             Station station = stationRepository.findByStationId(stationId);

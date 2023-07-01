@@ -1,8 +1,9 @@
 package com.ashan.demo.common;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class StationStatisticsDTO {
+public class StationStatisticsDTO implements Serializable {
     String stationId;
     String stationName;
     Long departureCount;

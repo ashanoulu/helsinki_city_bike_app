@@ -6,6 +6,7 @@ import com.ashan.demo.service.JourneyService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,7 @@ public class JourneyServiceImpl implements JourneyService {
 
 
     @Override
+    @Cacheable("allJourneys")
     public Page<Journey> all(String departureStation, String returnStation, Pageable pageable) {
         try {
             return journeyRepository.findAllByDepartureStationNameContainsAndAndReturnStationNameContaining(
@@ -33,6 +35,7 @@ public class JourneyServiceImpl implements JourneyService {
     }
 
     @Override
+    @Cacheable("countDepartureStation")
     public int countByDepartureStationId(String stationId) {
         try {
             return journeyRepository.countByDepartureStationId(stationId);
@@ -43,6 +46,7 @@ public class JourneyServiceImpl implements JourneyService {
     }
 
     @Override
+    @Cacheable("countReturnStation")
     public int countByReturnStationId(String stationId) {
         try {
             return journeyRepository.countByReturnStationId(stationId);
@@ -53,6 +57,7 @@ public class JourneyServiceImpl implements JourneyService {
     }
 
     @Override
+    @Cacheable("averageDepartureStation")
     public Object averageJourneysByDepartureStationId(String stationId) {
         try {
             return journeyRepository.averageJourneysByDepartureStationId(stationId);
@@ -63,6 +68,7 @@ public class JourneyServiceImpl implements JourneyService {
     }
 
     @Override
+    @Cacheable("averageReturnStation")
     public Object averageJourneysByReturnStationId(String stationId) {
         try {
             return journeyRepository.averageJourneysByReturnStationId(stationId);

@@ -1,6 +1,8 @@
 package com.ashan.demo.common;
 
-public class JourneyStatisticsDTO {
+import java.io.Serializable;
+
+public class JourneyStatisticsDTO implements Serializable {
     private String stationId;
     private String stationName;
     private String total;
